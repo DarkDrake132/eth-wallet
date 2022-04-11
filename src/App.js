@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { generateMnemonic } from "bip39";
 import { Wallet, providers, utils } from "ethers";
+
+import Header from "./containers/Header/Header";
 import "./App.css";
 
 function App() {
@@ -56,6 +58,7 @@ function App() {
 
   return (
     <div className="App">
+      <Header />
       <h3>Generate Mnemonic for Wallet</h3>
       <button onClick={genreateNewMnemonic}>Generate</button>
       {mnemonic ? (
