@@ -12,3 +12,8 @@ export const getProvider = (network) => {
       return new providers.InfuraProvider("rinkeby");
   }
 };
+
+export const getWallet = (mnemonic, path) => {
+  let wallet = Wallet.fromMnemonic(mnemonic, path);
+  return wallet;
+}

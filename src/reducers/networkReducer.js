@@ -1,7 +1,7 @@
 import { networks } from "../utils/network";
 
 const initialState = {
-    network: "null",
+    network: "",
     provider: {},
     networkList: networks,
 }

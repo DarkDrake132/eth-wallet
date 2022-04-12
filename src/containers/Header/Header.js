@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { chooseNetwork } from "../../actions";
-import { makeSelectNetwork, makeSelectNetworkList } from "../../selectors";
+import { makeSelectNetwork, makeSelectNetworkList } from "../../selectors/networkSelectors";
 
 import {
   AppBar,

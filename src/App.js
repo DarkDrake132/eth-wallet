@@ -3,6 +3,7 @@ import { generateMnemonic } from "bip39";
 import { Wallet, providers, utils } from "ethers";
 
 import Header from "./containers/Header/Header";
+import HomePage from "./containers/HomePage/HomePage";
 import "./App.css";
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
   return (
     <div className="App">
       <Header />
+      <HomePage />
       <h3>Generate Mnemonic for Wallet</h3>
       <button onClick={genreateNewMnemonic}>Generate</button>
       {mnemonic ? (
