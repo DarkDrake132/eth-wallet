@@ -1,24 +1,26 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 const selectWallet = (state) => state.walletReducer;
 
-const makeSelectWallet = () => createSelector(
-  selectWallet,
-  (state) => state.currentWallet,
-);
+const makeSelectMnemonic = () =>
+  createSelector(selectWallet, (state) => state.mnemonic);
 
-const makeSelectWalletList = () => createSelector(
-  selectWallet,
-  (state) => state.walletList,
-);
+const makeSelectIsConnected = () =>
+  createSelector(selectWallet, (state) => state.isConnected);
 
-const makeSelectCurrentPage = () => createSelector(
-  selectWallet,
-  (state) => state.currentPage,
-);
+const makeSelectWallet = () =>
+  createSelector(selectWallet, (state) => state.currentWallet);
+
+const makeSelectWalletList = () =>
+  createSelector(selectWallet, (state) => state.walletList);
+
+const makeSelectCurrentPage = () =>
+  createSelector(selectWallet, (state) => state.currentPage);
 
 export {
   selectWallet,
+  makeSelectMnemonic,
+  makeSelectIsConnected,
   makeSelectWallet,
   makeSelectWalletList,
   makeSelectCurrentPage,

@@ -1,4 +1,9 @@
 import { Wallet, providers, utils } from "ethers";
+import { generateMnemonic } from "bip39";
+
+export const getRandomMnemonic = () => {
+  return generateMnemonic();
+};
 
 export const getProvider = (network) => {
   switch (network) {
@@ -16,4 +21,8 @@ export const getProvider = (network) => {
 export const getWallet = (mnemonic, path) => {
   let wallet = Wallet.fromMnemonic(mnemonic, path);
   return wallet;
-}
+};
+
+export const toEther = (balance) => {
+  return utils.formatEther(balance);
+};

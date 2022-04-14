@@ -1,40 +1,50 @@
 import { call, put, select, takeEvery } from "redux-saga/effects";
 
 import { makeSelectProvider } from "../selectors/networkSelectors";
-import { makeSelectCurrentPage } from "../selectors/walletSelectors";
+import {
+  makeSelectCurrentPage,
+  makeSelectMnemonic,
+} from "../selectors/walletSelectors";
 
-import { getWallet } from "../utils/ethers";
-
-function getBalance(provider, address) {
-  return new Promise(function (resolve, reject) {
-    provider.getBalance(address, (err, data) => {
-      if (err !== null) return reject(err);
-      return resolve(data);
-    });
-  });
-}
+import { getWallet, toEther } from "../utils/ethers";
 
 function* getWalletList() {
   const provider = yield select(makeSelectProvider());
   const currentPage = yield select(makeSelectCurrentPage());
+  const mnemonic = yield select(makeSelectMnemonic());
   let walletList = [];
   const path = "m/44'/60'/0'/0/";
-  if (provider) {
-    for (let i = currentPage * 5; i < (currentPage + 1) * 5; i++) {
-      let wallet = getWallet(
-        "peasant horror box announce galaxy excess put enhance require mesh endless advice",
-        path + i
-      );
-      //let balance = yield call(getBalance, provider, wallet.address);
-      walletList.push({ address: wallet.address });
+  if (mnemonic !== "") {
+    for (let i = (currentPage - 1) * 5; i < currentPage * 5; i++) {
+      let wallet = getWallet(mnemonic, path + i);
+      let balance = 0;
+      if (Object.keys(provider).length !== 0) {
+        balance = yield call(
+          provider.getBalance.bind(provider),
+          wallet.address
+        );
+      }
+      balance = toEther(balance);
+      walletList.push({ address: wallet.address, balance: balance });
     }
   }
   yield put({ type: "SET_WALLET_LIST", payload: { walletList } });
+
+  if (walletList.length > 0) {
+    yield put({ type: "SET_CONNECTED", payload: { isConnected: true } });
+  }
+}
+
+function* disconnectWallet() {
+  yield put({ type: "SET_MNEMONIC", payload: { walletList: [] } });
+  yield put({ type: "SET_CURRENT_PAGE", payload: { currentPage: 0 } });
 }
 
 function* walletSaga() {
   yield takeEvery("SET_CURRENT_PAGE", getWalletList);
   yield takeEvery("SET_NETWORK", getWalletList);
+  yield takeEvery("SET_MNEMONIC", getWalletList);
+  yield takeEvery("SET_DISCONNECTED", disconnectWallet);
   // yield takeEvery("WALLET_CREATE", createWallet);
   // yield takeEvery("WALLET_DELETE", deleteWallet);
   // yield takeEvery("WALLET_SELECT", selectWallet);

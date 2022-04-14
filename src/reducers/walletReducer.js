@@ -1,11 +1,28 @@
 const initialState = {
+  mnemonic: "",
+  isConnected: false,
   currentWallet: null,
   walletList: [],
-  currentPage: 0,
+  currentPage: 1,
 };
 
 const walletReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "SET_MNEMONIC":
+      return {
+        ...state,
+        mnemonic: action.payload.mnemonic,
+      };
+    case "SET_CONNECTED":
+      return {
+        ...state,
+        isConnected: action.payload.isConnected,
+      };
+    case "SET_DISCONNECTED":
+      return {
+        ...state,
+        isConnected: action.payload.isConnected,
+      };
     case "SET_CURRENT_WALLET":
       return {
         ...state,

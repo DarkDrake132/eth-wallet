@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { chooseNetwork } from "../../actions";
+import { chooseNetwork } from "../../actions/networkActions";
 import { makeSelectNetwork, makeSelectNetworkList } from "../../selectors/networkSelectors";
 
 import {

@@ -1,21 +1,18 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 const selectNetwork = (state) => state.networkReducer;
 
-const makeSelectNetwork = () => createSelector(
-  selectNetwork,
-  (networkState) => networkState.network,
-);
+const makeSelectNetwork = () =>
+  createSelector(selectNetwork, (networkState) => networkState.network);
 
-const makeSelectNetworkList = () => createSelector(
-  selectNetwork,
-  (networkListState) => networkListState.networkList,
-);
+const makeSelectNetworkList = () =>
+  createSelector(
+    selectNetwork,
+    (networkListState) => networkListState.networkList
+  );
 
-const makeSelectProvider = () => createSelector(
-  selectNetwork,
-  (providerState) => providerState.provider,
-);
+const makeSelectProvider = () =>
+  createSelector(selectNetwork, (providerState) => providerState.provider);
 
 export {
   selectNetwork,
