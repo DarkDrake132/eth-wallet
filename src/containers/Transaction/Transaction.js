@@ -15,12 +15,21 @@ import {
   makeSelectWallet,
   makeSelectIsConnected,
 } from "../../selectors/walletSelectors";
-import { makeSelectProvider, makeSelectApiEndpoint } from "../../selectors/networkSelectors";
+import {
+  makeSelectProvider,
+  makeSelectApiEndpoint,
+} from "../../selectors/networkSelectors";
 
 import { parseEther } from "../../utils/ethers";
 
-function createUrlFetchingTransactions(apiEndpoint, address, apiKey = process.env.REACT_APP_API_KEY) {
-  const url = apiEndpoint + `/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${apiKey}`;
+function createUrlFetchingTransactions(
+  apiEndpoint,
+  address,
+  apiKey = process.env.REACT_APP_API_KEY
+) {
+  const url =
+    apiEndpoint +
+    `/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${apiKey}`;
   return url;
 }
 
@@ -49,11 +58,8 @@ function Transaction(props) {
   }, [provider]);
 
   useEffect(() => {
-    loadTransactions().then(list => {
-      setTransactions(list);
-      console.log(list);
-    })
-  }, [apiEndpoint])
+    loadTransactions();
+  }, [apiEndpoint]);
 
   const hideSnackbar = () => {
     setSnackbarOpen(false);
@@ -71,13 +77,18 @@ function Transaction(props) {
   };
 
   const loadTransactions = async () => {
-    const url = createUrlFetchingTransactions(apiEndpoint, wallet.wallet.address);
-    console.log(url)
-    const listRaw = await fetch(url)
+    const url = createUrlFetchingTransactions(
+      apiEndpoint,
+      wallet.wallet.address
+    );
+    console.log(url);
+    const listRaw = await fetch(url);
 
-    const list = await listRaw.json()
-    return list.result;
-  }
+    const list = await listRaw.json();
+    if (list.result.length > 0) {
+      setTransactions(list.result);
+    }
+  };
 
   return (
     <Container>
@@ -108,7 +119,10 @@ function Transaction(props) {
             />
           </TabPanel>
           <TabPanel value="3">
-            <TransactionList />
+            <TransactionList
+              transactions={transactions}
+              refresherTransactionList={loadTransactions}
+            />
           </TabPanel>
         </TabContext>
       </Box>
