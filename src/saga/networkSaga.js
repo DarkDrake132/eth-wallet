@@ -11,25 +11,25 @@ function* getNetworkAPIEndpoint() {
   switch (network) {
     case "mainnet":
       yield put({
-        type: "SET_NETWORK_API",
+        type: "SET_API_ENDPOINT",
         payload: { apiEndpoint: mainnetAPI },
       });
       break;
     case "ropsten":
       yield put({
-        type: "SET_NETWORK_API",
+        type: "SET_API_ENDPOINT",
         payload: { apiEndpoint: ropstenAPI },
       });
       break;
     case "rinkeby":
       yield put({
-        type: "SET_NETWORK_API",
+        type: "SET_API_ENDPOINT",
         payload: { apiEndpoint: rinkebyAPI },
       });
       break;
     default:
       yield put({
-        type: "SET_NETWORK_API",
+        type: "SET_API_ENDPOINT",
         payload: { apiEndpoint: rinkebyAPI },
       });
   }

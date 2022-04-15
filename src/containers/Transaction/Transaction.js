@@ -15,19 +15,25 @@ import {
   makeSelectWallet,
   makeSelectIsConnected,
 } from "../../selectors/walletSelectors";
-import { makeSelectProvider } from "../../selectors/networkSelectors";
+import { makeSelectProvider, makeSelectApiEndpoint } from "../../selectors/networkSelectors";
 
 import { parseEther } from "../../utils/ethers";
+
+function createUrlFetchingTransactions(apiEndpoint, address, apiKey = process.env.REACT_APP_API_KEY) {
+  const url = apiEndpoint + `/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${apiKey}`;
+  return url;
+}
 
 function Transaction(props) {
   const [tabValue, setTabValue] = useState("1");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   const handleChangeTab = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  const { isConnected, wallet, provider } = props;
+  const { isConnected, wallet, provider, apiEndpoint } = props;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +47,13 @@ function Transaction(props) {
       setSnackbarOpen(true);
     }
   }, [provider]);
+
+  useEffect(() => {
+    loadTransactions().then(list => {
+      setTransactions(list);
+      console.log(list);
+    })
+  }, [apiEndpoint])
 
   const hideSnackbar = () => {
     setSnackbarOpen(false);
@@ -56,6 +69,15 @@ function Transaction(props) {
     await wallet.wallet.signTransaction(tx);
     await walletInstance.sendTransaction(tx);
   };
+
+  const loadTransactions = async () => {
+    const url = createUrlFetchingTransactions(apiEndpoint, wallet.wallet.address);
+    console.log(url)
+    const listRaw = await fetch(url)
+
+    const list = await listRaw.json()
+    return list.result;
+  }
 
   return (
     <Container>
@@ -108,6 +130,7 @@ const mapStateToProps = createStructuredSelector({
   wallet: makeSelectWallet(),
   isConnected: makeSelectIsConnected(),
   provider: makeSelectProvider(),
+  apiEndpoint: makeSelectApiEndpoint(),
 });
 
 export default connect(mapStateToProps)(Transaction);
