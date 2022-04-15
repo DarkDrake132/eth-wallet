@@ -10,6 +10,10 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+function Capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export default function TransactionList(props) {
   const { transactions, refresherTransactionList } = props;
   return (
@@ -29,7 +33,7 @@ export default function TransactionList(props) {
             <AccordionDetails>
               {data.map(([key, value], index) => (
                 <Typography key={key + value + index}>
-                  {key}: {key === "timeStamp" ? (new Date(+value).toLocaleString()) : value}
+                  {key === "timeStamp" ? "Date sent" : Capitalize(key)}: {key === "timeStamp" ? (new Date(+value).toLocaleString()) : value}
                 </Typography>
               ))}
             </AccordionDetails>
