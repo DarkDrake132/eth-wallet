@@ -33,3 +33,12 @@ export const setCurrentPage = (page) => {
     },
   };
 };
+
+export const setCurrentWallet = (wallet) => {
+  return {
+    type: "SET_CURRENT_WALLET",
+    payload: {
+      currentWallet: wallet,
+    },
+  };
+};

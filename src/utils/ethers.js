@@ -26,3 +26,7 @@ export const getWallet = (mnemonic, path) => {
 export const toEther = (balance) => {
   return utils.formatEther(balance);
 };
+
+export const parseEther = (value) => {
+  return utils.parseEther(value);
+}

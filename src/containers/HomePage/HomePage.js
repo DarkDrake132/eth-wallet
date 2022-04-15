@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { useNavigate } from "react-router-dom";
 
 import {
   makeSelectWallet,
@@ -13,6 +14,7 @@ import {
   setMnemonic,
   setDisconnected,
   setCurrentPage,
+  setCurrentWallet,
 } from "../../actions/walletActions";
 
 import {
@@ -22,7 +24,6 @@ import {
   Typography,
   Container,
   TextField,
-  Box,
 } from "@mui/material";
 
 import Modal from "../../components/Modal/Modal";
@@ -32,16 +33,18 @@ import { getRandomMnemonic } from "../../utils/ethers";
 
 function HomePage(props) {
   const {
-    wallet,
     walletList,
     currentPage,
     setMnemonic,
     isConnected,
     setCurrentPage,
+    setCurrentWallet,
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
   const [mnemonicTemp, setMnemonicTemp] = useState("");
   const [isCreateNew, setIsCreateNew] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleOpenModal = (type) => {
     setModalOpen(true);
@@ -74,6 +77,11 @@ function HomePage(props) {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+  };
+
+  const onWalletClick = (wallet) => {
+    setCurrentWallet(wallet);
+    navigate("/transaction")
   };
 
   let modalContent = <></>;
@@ -170,8 +178,12 @@ function HomePage(props) {
           <Typography variant="h4" style={{ margin: 30 }}>
             Your Wallet List
           </Typography>
-          <Box></Box>
-          <Table data={walletList} currentPage={currentPage} changePage={handlePageChange} />
+          <Table
+            data={walletList}
+            currentPage={currentPage}
+            changePage={handlePageChange}
+            onWalletClick={onWalletClick}
+          />
         </>
       )}
     </Container>
@@ -190,6 +202,7 @@ const mapDispatchToProps = (dispatch) => {
     setMnemonic: (mnemonic) => dispatch(setMnemonic(mnemonic)),
     setDisconnected: () => dispatch(setDisconnected(false)),
     setCurrentPage: (page) => dispatch(setCurrentPage(page)),
+    setCurrentWallet: (wallet) => dispatch(setCurrentWallet(wallet)),
   };
 };
 
