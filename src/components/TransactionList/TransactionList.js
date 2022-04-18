@@ -22,7 +22,7 @@ export default function TransactionList(props) {
       {transactions?.map((transaction) => {
         const data = Object.entries(transaction);
         return (
-          <Accordion key={transaction.hash}>
+          <Accordion key={transaction.hash} style={{ textAlign: 'left' }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
