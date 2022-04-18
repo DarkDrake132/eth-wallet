@@ -2,8 +2,8 @@ import { select, put, takeEvery } from "redux-saga/effects";
 
 import { makeSelectNetwork } from "../selectors/networkSelectors";
 
-const mainnetAPI = "https://api.etherscan.com";
-const ropstenAPI = "https://api-ropsten.etherscan.com";
+const mainnetAPI = "https://api.etherscan.io";
+const ropstenAPI = "https://api-ropsten.etherscan.io";
 const rinkebyAPI = "https://api-rinkeby.etherscan.io/";
 
 function* getNetworkAPIEndpoint() {
