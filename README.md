@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Hướng dẫn sư dụng ứng dụng Ethereum Wallet:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Đầu tiên clone dự án này về máy với dường link: https://github.com/DarkDrake132/eth-wallet.git bằng các câu lệnh Git hoặc sử dụng Github Desktop.
 
-## Available Scripts
+## Các câu lệnh cần dùng để chạy dự án
 
-In the project directory, you can run:
+Ở trong thư mục code, ta sử dụng bất kỳ IDE nào (khuyến khích sử dụng Visual Studio Code), mở cửa sổ Terminal lên và chạy các câu lệnh sau:
+
+### `npm install` hoặc `yarn install`
+
+Câu lệnh này sẽ cài đặt tất cả các thư viện cần thiết để khởi chạy chương trình.
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Sau khi đã cài đặt xong, chạy câu lệnh này để tiến hành khởi chạy chương trình, chương trình sẽ tự động mở ở localhost:3000 trên borwser mặc định của máy tính.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Quá trình làm việc
 
-### `npm test`
+#### Đầu tiên là về tìm hiểu thư viện hỗ trợ tương tác đến mạng Ethereum đó là thư viện ethers.js. Thư viện giúp tiết kiệm được thời gian khi cung cấp các hàm có sẵn như:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+ethers.fromMnemonic(mnemonic, path)
+```
+Hàm này giúp ta tạo ra ví từ chuỗi mnemonic
 
-### `npm run build`
+#### Thứ 2 là hàm tạo Instance tới Provider, cụ thể ở ứng dụng này sẽ sử dụng InfuraProvider
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+provider.InfuraProvider(network)
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Tiếp đến, sau khi được kết nối đến provider, ta có thể thực hiện gọi hàm getBalance để lấy tất cả các unspent transaction có public key trùng với address của người dùng và cộng các giá trị lại, giá trị trả về là Wei.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+provider.getBalance(address)
+```
 
-### `npm run eject`
+#### Về chức năng ký và gửi transaction, transaction đã được hỗ trợ tối đa đến từ thư viên do đó khi tạo tả chỉ cần tạo 1 Object như sau:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+const tx = {
+  to: address,
+  value: etherFormatString
+}
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Khi gửi transaction ta cần thực hiện đó là ký transaction và tạo một wallet instance mới, kết nối instance này tới provider và gửi transaction đi
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+wallet.signTransaction(tx);
+const walletInstance = wallet.connect(provider);
+walletInstance.sendTransaction(tx);
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Cuối cùng đó là hiển thị ra danh sách các transaction đã được xác nhận bởi các Miner trên mạng Ethereum, mạng này sử dụng PoW với công việc d91 là hash các block sao cho chuỗi hash các block đều thỏa số nonce được quy định (số nonce này được quyết định sẵn khi ta gửi transaction).
 
-## Learn More
+Ngoài ra, để có được danh sách các transaction thì chương trình có sử dụng 3 API Endpoint được cung cấp bởi https://etherscan.io/ bao gồm:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  * https://api.etherscan.io dành cho Mainnet
+  * https://api-ropsten.etherscan.io dành cho Ropsten
+  * https://api-rinkeby.etherscan.io dành cho Rinkeby
 
+## Tài liệu tham khảo
+
+Tài liệu ReactJS [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+Tài liệu UI [MUI](https://mui.com/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Tài liệu thư viện tương tác với mạng Ethereum [ethers.js](https://docs.ethers.io/v5/)
 
 ### Deployment
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Thông tin khác
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
