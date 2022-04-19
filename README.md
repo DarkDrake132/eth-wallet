@@ -75,3 +75,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### Thông tin khác
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Video demo sản phẩm: https://youtu.be/tWAgo1p-nQE
