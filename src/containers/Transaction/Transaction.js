@@ -85,6 +85,8 @@ function Transaction(props) {
     const listRaw = await fetch(url);
 
     const list = await listRaw.json();
+    console.log(list)
+    if (list.message === "NOTOK") setTransactions([]);
     if (list.result.length > 0) {
       setTransactions(list.result);
     }

@@ -36,8 +36,8 @@ function* getWalletList() {
 }
 
 function* disconnectWallet() {
-  yield put({ type: "SET_MNEMONIC", payload: { walletList: [] } });
-  yield put({ type: "SET_CURRENT_PAGE", payload: { currentPage: 0 } });
+  yield put({ type: "SET_MNEMONIC", payload: { mnemonic: "" } });
+  yield put({ type: "SET_CURRENT_PAGE", payload: { currentPage: 1 } });
   yield put({ type: "SET_CURRENT_WALLET", payload: { currentWallet: null } });
 }
 

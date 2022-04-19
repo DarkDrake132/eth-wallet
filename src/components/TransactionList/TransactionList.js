@@ -33,7 +33,7 @@ export default function TransactionList(props) {
             <AccordionDetails>
               {data.map(([key, value], index) => (
                 <Typography key={key + value + index}>
-                  {key === "timeStamp" ? "Date sent" : Capitalize(key)}: {key === "timeStamp" ? (new Date(+value).toLocaleString()) : value}
+                  {key === "timeStamp" ? "Date sent" : Capitalize(key)}: {key === "timeStamp" ? (new Date(+value * 1000).toLocaleString()) : value}
                 </Typography>
               ))}
             </AccordionDetails>
