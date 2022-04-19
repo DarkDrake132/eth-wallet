@@ -35,7 +35,7 @@ provider.InfuraProvider(network)
 provider.getBalance(address)
 ```
 
-#### Về chức năng ký và gửi transaction, transaction đã được hỗ trợ tối đa đến từ thư viên do đó khi tạo tả chỉ cần tạo 1 Object như sau:
+#### Về chức năng ký và gửi transaction, transaction đã được hỗ trợ tối đa đến từ thư viên do đó khi tạo ta chỉ cần tạo 1 Object như sau:
 
 ```
 const tx = {
